@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>İlknur</title>
+
+<style>
+body {
+    margin: 0;
+    overflow: hidden;
+    background: linear-gradient(135deg, #2b0033, #4b006e);
+    color: #f8c6ff;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+.page {
+    display: none;
+    height: 100vh;
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.active {
+    display: flex;
+}
+
+.fade {
+    opacity: 0;
+    animation: fadeIn 2s forwards;
+}
+
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+button {
+    padding: 12px 20px;
+    margin: 10px;
+    font-size: 18px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+#yes {
+    background: #ff66cc;
+    color: white;
+}
+
+#no {
+    background: #999;
+    color: white;
+    position: absolute;
+}
+
+input {
+    padding: 12px;
+    width: 80%;
+    max-width: 300px;
+    border-radius: 10px;
+    border: none;
+    margin-top: 15px;
+}
+
+/* Kalpler */
+.heart {
+    position: absolute;
+    color: pink;
+    font-size: 20px;
+    animation: floatUp 5s linear infinite;
+}
+
+@keyframes floatUp {
+    0% {transform: translateY(100vh); opacity: 1;}
+    100% {transform: translateY(-10vh); opacity: 0;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🎵 MÜZİK -->
+<audio id="music" loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mp3">
+</audio>
+
+<!-- SAYFA 1 -->
+<div class="page active" id="page1">
+    <h1 class="fade">İlknur...</h1>
+    <p class="fade" style="animation-delay:1s;">Seni gerçekten çok özledim.</p>
+    <button onclick="startExperience()">Devam et</button>
+</div>
+
+<!-- SAYFA 2 -->
+<div class="page" id="page2">
+    <p class="fade">Kalbim resmen ritmini kaybetti.</p>
+    <p class="fade" style="animation-delay:1s;">Yokluğun hiç iyi gelmedi...</p>
+    <button onclick="nextPage()">Devam et</button>
+</div>
+
+<!-- SAYFA 3 -->
+<div class="page" id="page3">
+    <h2>Beni affeder misin?</h2>
+    <button id="yes" onclick="yesFlow()">Evet</button>
+    <button id="no">Hayır</button>
+</div>
+
+<!-- SAYFA 4 -->
+<div class="page" id="page4">
+    <p class="fade">Bunu duyduğuma çok sevindim...</p>
+    <p class="fade" style="animation-delay:1s;">Çünkü seni kaybetmek istemiyorum.</p>
+    <button onclick="nextPage()">Devam et</button>
+</div>
+
+<!-- SAYFA 5 -->
+<div class="page" id="page5">
+    <p class="fade">Sen hayatımda olduğunda her şey daha güzeldi.</p>
+    <p class="fade" style="animation-delay:1s;">Bana iyi gelen bir tedavi gibiydin.</p>
+    <button onclick="nextPage()">Son bir şey...</button>
+</div>
+
+<!-- FINAL -->
+<div class="page" id="page6">
+    <h2 class="fade">Bana bir şey söylemek ister misin?</h2>
+    
+    <input type="text" id="message" placeholder="Mesajını yaz...">
+    <button onclick="sendMessage()">Gönder 💌</button>
+
+    <p id="response" style="margin-top:15px;"></p>
+</div>
+
+<script>
+let currentPage = 1;
+
+/* Müzik başlat */
+function startExperience() {
+    document.getElementById("music").play();
+    nextPage();
+}
+
+function nextPage() {
+    document.getElementById("page"+currentPage).classList.remove("active");
+    currentPage++;
+    document.getElementById("page"+currentPage).classList.add("active");
+}
+
+function yesFlow() {
+    nextPage();
+}
+
+/* 💬 WHATSAPP GÖNDERME */
+function sendMessage() {
+    let msg = document.getElementById("message").value;
+
+    if(msg.trim() === "") {
+        document.getElementById("response").innerText = "Bir şey yazmalısın 🥺";
+        return;
+    }
+
+    let phone = "5076547521"; // 🔴 BURAYA KENDİ NUMARANI YAZ
+    let text = encodeURIComponent("İlknur'dan mesaj: " + msg);
+
+    let url = "https://wa.me/" + phone + "?text=" + text;
+
+    window.open(url, "_blank");
+
+    document.getElementById("response").innerText = "Mesajın bana ulaşıyor... ❤️";
+}
+
+/* Kalpler */
+setInterval(() => {
+    let heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "💖";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (Math.random() * 20 + 10) + "px";
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 5000);
+}, 300);
+
+/* Kaçan hayır */
+let noBtn = document.getElementById("no");
+
+noBtn.addEventListener("mouseover", () => {
+    let x = Math.random() * window.innerWidth;
+    let y = Math.random() * window.innerHeight;
+
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+});
+</script>
+
+</body>
+</html>
